@@ -1,0 +1,29 @@
+# Dokumentacja lokalna; publikujemy tylko glowny README.
+*.[mM][dD]
+!/README.md
+
+# Visual Studio i wyniki kompilacji.
+.vs/
+build/
+x64/
+x86/
+Debug/
+Release/
+ipch/
+*.user
+*.suo
+*.obj
+*.pdb
+*.idb
+*.ilk
+*.exe
+*.dll
+*.lib
+*.exp
+*.tlog
+*.log
+
+# Lokalne sekrety i ustawienia.
+.env
+.env.*
+!.env.example
