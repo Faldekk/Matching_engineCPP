@@ -1,0 +1,59 @@
+# Serwer uruchamiasz przez run-server.cmd. Wszystkie zlecenia sa wirtualne.
+# Pierwsza kompilacja: build-server.cmd (pobiera Crow 1.2.1 i Asio 1.30.2).
+# Testy API bez internetu: build-server.cmd test.
+# Nie ponawiaj automatycznie POST: idempotencja bedzie w dalszym etapie.
+
+GET http://127.0.0.1:18080/api/state
+
+### Rynek: ready=false oznacza, ze handel jest zablokowany.
+GET http://127.0.0.1:18080/api/market
+
+### Saldo, pozycje BTC/ETH/SOL i udzialy procentowe. equity=null przy braku ceny posiadanego aktywa.
+GET http://127.0.0.1:18080/api/wallet
+
+### Historia poszczegolnych wykonan na poziomach ceny.
+GET http://127.0.0.1:18080/api/history
+
+### Market BUY. quantity podajemy w BTC.
+# 200: wykonanie (takze czesciowe/zerowe), 400: JSON, 409: brak srodkow lub danych,
+# 413: za duze body, 415: Content-Type, 422: niepoprawna strona/ilosc.
+POST http://127.0.0.1:18080/api/orders
+Content-Type: application/json
+
+{"side":"BUY","quantity":0.001}
+
+### Market SELL.
+POST http://127.0.0.1:18080/api/orders
+Content-Type: application/json
+
+{"side":"SELL","quantity":0.0005}
+
+### Wybor Ethereum (bez symbolu domyslnie BTCUSDT).
+GET http://127.0.0.1:18080/api/state?symbol=ETHUSDT
+
+### Zakup Ethereum ze wspolnych USDT.
+POST http://127.0.0.1:18080/api/orders
+Content-Type: application/json
+
+{"symbol":"ETHUSDT","side":"BUY","quantity":0.01}
+
+### Zakup Solany.
+POST http://127.0.0.1:18080/api/orders
+Content-Type: application/json
+
+{"symbol":"SOLUSDT","side":"BUY","quantity":1}
+
+### Automatyczne kupno ETH, gdy ask spadnie do 2000 USDT (rezerwacja 20 USDT).
+POST http://127.0.0.1:18080/api/conditional-orders
+Content-Type: application/json
+
+{"symbol":"ETHUSDT","type":"BUY_LIMIT","quantity":0.01,"price":2000}
+
+### Stop Loss dla juz posiadanego ETH (rezerwuje ilosc aktywa).
+POST http://127.0.0.1:18080/api/conditional-orders
+Content-Type: application/json
+
+{"symbol":"ETHUSDT","type":"STOP_LOSS","quantity":0.01,"price":1900}
+
+### Anulowanie po ID otrzymanym z POST; zwalnia pozostalosc rezerwacji.
+POST http://127.0.0.1:18080/api/conditional-orders/1/cancel

@@ -1,0 +1,536 @@
+:root{
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  color:#e7ecee;
+  background:#101519;
+  font-synthesis:none;
+  color-scheme:dark;
+  --muted:#83929c;
+  --line:#283137;
+  --green:#45d3a5;
+  --red:#f48382}
+  *{
+    box-sizing:border-box}
+    body{
+      margin:0}
+      button,input{
+        font:inherit}
+        button{
+          cursor:pointer}
+          button:disabled{
+            cursor:not-allowed;
+            opacity:.4}
+            button:focus-visible,a:focus-visible,input:focus-visible{
+              outline:2px solid var(--green);
+              outline-offset:4px}
+              a{
+                color:inherit;
+                text-decoration:none}
+                .topbar{
+                  height:78px;
+                  border-bottom:1px solid var(--line);
+                  display:flex;
+                  align-items:center;
+                  justify-content:space-between;
+                  padding:0 5%;
+                  background:#12181c}
+                  .brand{
+                    display:flex;
+                    align-items:center;
+                    gap:8px;
+                    font-size:17px;
+                    letter-spacing:1.5px;
+                    font-weight:700}
+                    .brand-light{
+                      font-weight:400;
+                      color:#8c9ca4;
+                      letter-spacing:2px;
+                      margin-left:-4px}
+                      .brand-icon{
+                        display:flex;
+                        align-items:center;
+                        gap:2px;
+                        border:1px solid #456359;
+                        color:var(--green);
+                        padding:5px 8px;
+                        margin-right:9px;
+                        font-size:19px}
+                        .brand-icon span{
+                          font-size:16px}
+                          .topbar-right{
+                            display:flex;
+                            align-items:center;
+                            gap:24px}
+                            .mode,.small-label,.eyebrow{
+                              font-size:10px;
+                              letter-spacing:1.5px;
+                              font-weight:600}
+                              .mode{
+                                color:#a2afa9;
+                                border:1px solid #34413d;
+                                padding:7px 10px;
+                                border-radius:4px}
+                                .status{
+                                  font-size:12px;
+                                  color:var(--muted)}
+                                  .status:before{
+                                    content:'';
+                                    display:inline-block;
+                                    width:6px;
+                                    height:6px;
+                                    background:#d4a35b;
+                                    border-radius:50%;
+                                    margin-right:8px}
+                                    .status.ready:before{
+                                      background:var(--green)}
+                                      .status.ready{
+                                        color:var(--green)}
+                                        .status.offline{
+                                          color:var(--red)}
+                                          .status.offline:before{
+                                            background:var(--red)}
+                                            main{
+                                              max-width:1440px;
+                                              margin:auto;
+                                              padding:38px 5% 20px}
+                                              .page-heading{
+                                                display:flex;
+                                                justify-content:space-between;
+                                                align-items:center;
+                                                margin-bottom:30px}
+                                                .eyebrow{
+                                                  color:var(--green);
+                                                  margin:0 0 12px}
+                                                  h1{
+                                                    font-size:30px;
+                                                    letter-spacing:-1px;
+                                                    margin:0;
+                                                    font-weight:600}
+                                                    .heading-dot{
+                                                      color:var(--green)}
+                                                      .subtitle{
+                                                        font-size:13px;
+                                                        color:var(--muted);
+                                                        margin:10px 0 0}
+                                                        .session-tag{
+                                                          font-size:11px;
+                                                          color:var(--muted)}
+                                                          .tiny-dot{
+                                                            display:inline-block;
+                                                            width:5px;
+                                                            height:5px;
+                                                            border-radius:50%;
+                                                            background:var(--green);
+                                                            vertical-align:middle;
+                                                            margin-right:7px}
+                                                            .wallet-grid{
+                                                              display:grid;
+                                                              grid-template-columns:repeat(4,1fr);
+                                                              gap:14px;
+                                                              margin-bottom:24px}
+                                                              .metric{
+                                                                background:#171e23;
+                                                                border:1px solid var(--line);
+                                                                padding:20px 20px 18px;
+                                                                border-radius:8px}
+                                                                .metric p{
+                                                                  display:flex;
+                                                                  justify-content:space-between;
+                                                                  margin:0 0 20px;
+                                                                  font-size:12px;
+                                                                  color:#a6b2b9}
+                                                                  .metric-icon{
+                                                                    font-size:16px;
+                                                                    color:#6c8380}
+                                                                    .bitcoin-small{
+                                                                      color:#e8a858}
+                                                                      .metric h2{
+                                                                        font-size:24px;
+                                                                        font-weight:500;
+                                                                        letter-spacing:-.6px;
+                                                                        margin:0 0 9px;
+                                                                        font-variant-numeric:tabular-nums}
+                                                                        .metric-note{
+                                                                          font-size:10px;
+                                                                          color:var(--muted)}
+                                                                          .trading-grid{
+                                                                            display:grid;
+                                                                            grid-template-columns:minmax(0,1.8fr) minmax(300px,1fr);
+                                                                            gap:20px}
+                                                                            .panel{
+                                                                              border:1px solid var(--line);
+                                                                              border-radius:8px;
+                                                                              background:#161d22;
+                                                                              overflow:hidden}
+                                                                              .market-header{
+                                                                                padding:24px;
+                                                                                display:flex;
+                                                                                justify-content:space-between;
+                                                                                align-items:center;
+                                                                                border-bottom:1px solid var(--line)}
+                                                                                .market-name{
+                                                                                  display:flex;
+                                                                                  gap:13px;
+                                                                                  align-items:center}
+                                                                                  .bitcoin{
+                                                                                    background:#3a2b1b;
+                                                                                    color:#ffb762;
+                                                                                    width:42px;
+                                                                                    height:42px;
+                                                                                    border-radius:50%;
+                                                                                    display:grid;
+                                                                                    place-items:center;
+                                                                                    font-size:27px}
+                                                                                    .market-name h2{
+                                                                                      font-size:19px;
+                                                                                      margin:0 0 6px;
+                                                                                      font-weight:600}
+                                                                                      .muted{
+                                                                                        color:var(--muted);
+                                                                                        font-weight:400}
+                                                                                        .market-name p{
+                                                                                          font-size:11px;
+                                                                                          color:var(--muted);
+                                                                                          margin:0}
+                                                                                          .market-price{
+                                                                                            text-align:right}
+                                                                                            .market-price strong{
+                                                                                              display:block;
+                                                                                              font-size:23px;
+                                                                                              font-weight:500;
+                                                                                              font-variant-numeric:tabular-nums}
+                                                                                              .market-price span{
+                                                                                                display:block;
+                                                                                                margin-top:6px;
+                                                                                                color:var(--muted);
+                                                                                                font-size:10px}
+                                                                                                .panel-heading{
+                                                                                                  display:flex;
+                                                                                                  align-items:center;
+                                                                                                  justify-content:space-between;
+                                                                                                  padding:21px 24px}
+                                                                                                  .panel-heading h3{
+                                                                                                    font-size:14px;
+                                                                                                    font-weight:500;
+                                                                                                    margin:0}
+                                                                                                    .small-label{
+                                                                                                      color:#7a8b94;
+                                                                                                      font-size:9px}
+                                                                                                      .book-grid{
+                                                                                                        display:grid;
+                                                                                                        grid-template-columns:1fr 1fr;
+                                                                                                        padding:0 24px 22px;
+                                                                                                        gap:20px}
+                                                                                                        .book-grid>div+div{
+                                                                                                          border-left:1px solid var(--line);
+                                                                                                          padding-left:20px}
+                                                                                                          .book-side{
+                                                                                                            display:flex;
+                                                                                                            justify-content:space-between;
+                                                                                                            align-items:center;
+                                                                                                            margin:3px 0 21px;
+                                                                                                            font-size:10px;
+                                                                                                            letter-spacing:1px}
+                                                                                                            .book-side>span+span{
+                                                                                                              font-size:9px;
+                                                                                                              color:var(--muted);
+                                                                                                              letter-spacing:0}
+                                                                                                              .buy-text{
+                                                                                                                color:var(--green)}
+                                                                                                                .sell-text{
+                                                                                                                  color:var(--red)}
+                                                                                                                  table{
+                                                                                                                    width:100%;
+                                                                                                                    border-collapse:collapse;
+                                                                                                                    font-variant-numeric:tabular-nums}
+                                                                                                                    th{
+                                                                                                                      font-weight:400;
+                                                                                                                      font-size:10px;
+                                                                                                                      text-align:right;
+                                                                                                                      color:var(--muted);
+                                                                                                                      padding:0 0 13px}
+                                                                                                                      th:first-child,td:first-child{
+                                                                                                                        text-align:left}
+                                                                                                                        td{
+                                                                                                                          text-align:right;
+                                                                                                                          font-family:Consolas,monospace;
+                                                                                                                          font-size:12px;
+                                                                                                                          padding:11px 0}
+                                                                                                                          tbody tr.depth{
+                                                                                                                            background:linear-gradient(to left,var(--depth-color) var(--depth),transparent var(--depth))}
+                                                                                                                            tbody tr.depth td{
+                                                                                                                              padding:11px 6px}
+                                                                                                                              .book-footer{
+                                                                                                                                display:flex;
+                                                                                                                                justify-content:space-between;
+                                                                                                                                padding:16px 24px;
+                                                                                                                                border-top:1px solid var(--line);
+                                                                                                                                font-size:10px;
+                                                                                                                                color:var(--muted)}
+                                                                                                                                .book-footer strong{
+                                                                                                                                  color:#d4ddde;
+                                                                                                                                  font-family:Consolas,monospace;
+                                                                                                                                  font-weight:400;
+                                                                                                                                  margin-left:10px}
+                                                                                                                                  .order-panel .panel-heading{
+                                                                                                                                    border-bottom:1px solid var(--line)}
+                                                                                                                                    .side-switch{
+                                                                                                                                      display:grid;
+                                                                                                                                      grid-template-columns:1fr 1fr;
+                                                                                                                                      margin:21px 24px 0;
+                                                                                                                                      padding:4px;
+                                                                                                                                      background:#10171b;
+                                                                                                                                      border:1px solid #273139;
+                                                                                                                                      border-radius:6px}
+                                                                                                                                      .side-switch button{
+                                                                                                                                        background:none;
+                                                                                                                                        border:0;
+                                                                                                                                        border-radius:4px;
+                                                                                                                                        color:var(--muted);
+                                                                                                                                        padding:10px;
+                                                                                                                                        font-size:12px;
+                                                                                                                                        font-weight:600}
+                                                                                                                                        .side-switch button.selected{
+                                                                                                                                          background:#233c34;
+                                                                                                                                          color:var(--green)}
+                                                                                                                                          .side-switch button#sell.selected{
+                                                                                                                                            background:#442b2e;
+                                                                                                                                            color:var(--red)}
+                                                                                                                                            form{
+                                                                                                                                              padding:0 24px}
+                                                                                                                                              .order-type{
+                                                                                                                                                display:flex;
+                                                                                                                                                justify-content:space-between;
+                                                                                                                                                padding:22px 0;
+                                                                                                                                                font-size:11px;
+                                                                                                                                                color:var(--muted)}
+                                                                                                                                                .order-type strong{
+                                                                                                                                                  color:#d6e2dd;
+                                                                                                                                                  font-weight:500}
+                                                                                                                                                  .order-type .tiny-dot{
+                                                                                                                                                    margin:0 0 0 7px}
+                                                                                                                                                    label{
+                                                                                                                                                      display:block;
+                                                                                                                                                      font-size:11px;
+                                                                                                                                                      margin:0 0 10px;
+                                                                                                                                                      color:#c0cace}
+                                                                                                                                                      .input-wrap{
+                                                                                                                                                        display:flex;
+                                                                                                                                                        align-items:center;
+                                                                                                                                                        border:1px solid #3b484e;
+                                                                                                                                                        border-radius:5px;
+                                                                                                                                                        background:#10171b;
+                                                                                                                                                        padding:0 13px}
+                                                                                                                                                        .input-wrap input{
+                                                                                                                                                          width:100%;
+                                                                                                                                                          padding:13px 0;
+                                                                                                                                                          border:0;
+                                                                                                                                                          background:none;
+                                                                                                                                                          outline:none;
+                                                                                                                                                          font-size:16px;
+                                                                                                                                                          color:#e4e9ec;
+                                                                                                                                                          font-family:Consolas,monospace}
+                                                                                                                                                          .input-wrap span{
+                                                                                                                                                            font-size:10px;
+                                                                                                                                                            color:var(--muted)}
+                                                                                                                                                            .input-help{
+                                                                                                                                                              font-size:10px;
+                                                                                                                                                              color:var(--muted);
+                                                                                                                                                              margin:9px 0 21px}
+                                                                                                                                                              .estimate{
+                                                                                                                                                                display:flex;
+                                                                                                                                                                justify-content:space-between;
+                                                                                                                                                                font-size:11px;
+                                                                                                                                                                color:var(--muted);
+                                                                                                                                                                margin-bottom:20px}
+                                                                                                                                                                .estimate strong{
+                                                                                                                                                                  color:#d8e0e3;
+                                                                                                                                                                  font-weight:400}
+                                                                                                                                                                  .submit{
+                                                                                                                                                                    width:100%;
+                                                                                                                                                                    border:0;
+                                                                                                                                                                    border-radius:5px;
+                                                                                                                                                                    background:var(--green);
+                                                                                                                                                                    color:#10241b;
+                                                                                                                                                                    font-weight:600;
+                                                                                                                                                                    font-size:13px;
+                                                                                                                                                                    padding:14px}
+                                                                                                                                                                    .submit.sell{
+                                                                                                                                                                      background:var(--red);
+                                                                                                                                                                      color:#301314}
+                                                                                                                                                                      .order-hint{
+                                                                                                                                                                        font-size:10px;
+                                                                                                                                                                        color:var(--muted);
+                                                                                                                                                                        text-align:center;
+                                                                                                                                                                        min-height:15px;
+                                                                                                                                                                        margin:11px 0 17px}
+                                                                                                                                                                        .order-message{
+                                                                                                                                                                          font-size:11px;
+                                                                                                                                                                          line-height:1.6;
+                                                                                                                                                                          border:1px solid #38574c;
+                                                                                                                                                                          padding:12px;
+                                                                                                                                                                          border-radius:5px;
+                                                                                                                                                                          color:#a9e9d0;
+                                                                                                                                                                          margin-bottom:16px;
+                                                                                                                                                                          overflow-wrap:anywhere}
+                                                                                                                                                                          .order-message.error{
+                                                                                                                                                                            border-color:#714446;
+                                                                                                                                                                            color:#f7b8b5}
+                                                                                                                                                                            .simulation-note{
+                                                                                                                                                                              display:flex;
+                                                                                                                                                                              gap:9px;
+                                                                                                                                                                              margin:0 24px 21px;
+                                                                                                                                                                              border-top:1px solid var(--line);
+                                                                                                                                                                              padding-top:16px;
+                                                                                                                                                                              color:var(--muted);
+                                                                                                                                                                              font-size:10px;
+                                                                                                                                                                              line-height:1.6}
+                                                                                                                                                                              .simulation-note>span{
+                                                                                                                                                                                font-size:13px}
+                                                                                                                                                                                .simulation-note p{
+                                                                                                                                                                                  margin:0}
+                                                                                                                                                                                  .history-panel{
+                                                                                                                                                                                    margin-top:24px}
+                                                                                                                                                                                    .history-title{
+                                                                                                                                                                                      display:flex;
+                                                                                                                                                                                      align-items:center;
+                                                                                                                                                                                      gap:10px}
+                                                                                                                                                                                      .count{
+                                                                                                                                                                                        padding:3px 7px;
+                                                                                                                                                                                        border-radius:4px;
+                                                                                                                                                                                        background:#263137;
+                                                                                                                                                                                        color:#a9b6bc;
+                                                                                                                                                                                        font-size:10px}
+                                                                                                                                                                                        .table-scroll{
+                                                                                                                                                                                          padding:0 24px 18px;
+                                                                                                                                                                                          overflow-x:auto}
+                                                                                                                                                                                          .history-table th{
+                                                                                                                                                                                            padding:0 10px 14px}
+                                                                                                                                                                                            .history-table td{
+                                                                                                                                                                                              padding:13px 10px;
+                                                                                                                                                                                              border-top:1px solid #242e35}
+                                                                                                                                                                                              .history-table td:first-child{
+                                                                                                                                                                                                color:var(--muted)}
+                                                                                                                                                                                                .side-tag{
+                                                                                                                                                                                                  font-family:Segoe UI,sans-serif;
+                                                                                                                                                                                                  font-size:10px;
+                                                                                                                                                                                                  padding:4px 8px;
+                                                                                                                                                                                                  border-radius:4px;
+                                                                                                                                                                                                  background:#223b32;
+                                                                                                                                                                                                  color:var(--green)}
+                                                                                                                                                                                                  .side-tag.sell{
+                                                                                                                                                                                                    background:#3c282d;
+                                                                                                                                                                                                    color:var(--red)}
+                                                                                                                                                                                                    .empty-cell{
+                                                                                                                                                                                                      text-align:center!important;
+                                                                                                                                                                                                      color:var(--muted);
+                                                                                                                                                                                                      padding:30px!important;
+                                                                                                                                                                                                      font-family:Segoe UI,sans-serif!important;
+                                                                                                                                                                                                      font-size:12px}
+                                                                                                                                                                                                      footer{
+                                                                                                                                                                                                        display:flex;
+                                                                                                                                                                                                        justify-content:space-between;
+                                                                                                                                                                                                        margin-top:23px;
+                                                                                                                                                                                                        gap:15px;
+                                                                                                                                                                                                        color:#71818a;
+                                                                                                                                                                                                        font-size:10px;
+                                                                                                                                                                                                        line-height:1.5}
+                                                                                                                                                                                                        .positive{
+                                                                                                                                                                                                          color:var(--green)}
+                                                                                                                                                                                                          .negative{
+                                                                                                                                                                                                            color:var(--red)}
+                                                                                                                                                                                                            @media(max-width:1000px){
+                                                                                                                                                                                                              main{
+                                                                                                                                                                                                                padding:28px 24px}
+                                                                                                                                                                                                                .topbar{
+                                                                                                                                                                                                                  padding:0 24px}
+                                                                                                                                                                                                                  .wallet-grid{
+                                                                                                                                                                                                                    grid-template-columns:repeat(2,1fr)}
+                                                                                                                                                                                                                    .session-tag{
+                                                                                                                                                                                                                      display:none}
+                                                                                                                                                                                                                      .trading-grid{
+                                                                                                                                                                                                                        grid-template-columns:minmax(0,1.4fr) minmax(290px,1fr)}
+                                                                                                                                                                                                                        .book-side>span+span{
+                                                                                                                                                                                                                          display:none}
+                                                                                                                                                                                                                          .book-grid{
+                                                                                                                                                                                                                            gap:12px;
+                                                                                                                                                                                                                            padding:0 16px 22px}
+                                                                                                                                                                                                                            .book-grid>div+div{
+                                                                                                                                                                                                                              padding-left:12px}
+                                                                                                                                                                                                                              .market-header{
+                                                                                                                                                                                                                                padding:20px 16px}
+                                                                                                                                                                                                                                .market-price strong{
+                                                                                                                                                                                                                                  font-size:20px}
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                @media(max-width:720px){
+                                                                                                                                                                                                                                  .topbar{
+                                                                                                                                                                                                                                    height:66px;
+                                                                                                                                                                                                                                    padding:0 18px}
+                                                                                                                                                                                                                                    .brand{
+                                                                                                                                                                                                                                      font-size:13px}
+                                                                                                                                                                                                                                      .brand-icon{
+                                                                                                                                                                                                                                        margin-right:1px}
+                                                                                                                                                                                                                                        .topbar-right{
+                                                                                                                                                                                                                                          gap:0}
+                                                                                                                                                                                                                                          .mode{
+                                                                                                                                                                                                                                            display:none}
+                                                                                                                                                                                                                                            main{
+                                                                                                                                                                                                                                              padding:25px 16px}
+                                                                                                                                                                                                                                              h1{
+                                                                                                                                                                                                                                                font-size:26px}
+                                                                                                                                                                                                                                                .page-heading{
+                                                                                                                                                                                                                                                  margin-bottom:23px}
+                                                                                                                                                                                                                                                  .trading-grid{
+                                                                                                                                                                                                                                                    grid-template-columns:1fr}
+                                                                                                                                                                                                                                                    .wallet-grid{
+                                                                                                                                                                                                                                                      gap:10px}
+                                                                                                                                                                                                                                                      .metric{
+                                                                                                                                                                                                                                                        padding:16px 12px}
+                                                                                                                                                                                                                                                        .metric h2{
+                                                                                                                                                                                                                                                          font-size:19px}
+                                                                                                                                                                                                                                                          .metric-note{
+                                                                                                                                                                                                                                                            font-size:9px}
+                                                                                                                                                                                                                                                            .metric p{
+                                                                                                                                                                                                                                                              margin-bottom:15px}
+                                                                                                                                                                                                                                                              .panel-heading{
+                                                                                                                                                                                                                                                                padding:19px 18px}
+                                                                                                                                                                                                                                                                .history-table{
+                                                                                                                                                                                                                                                                  min-width:580px}
+                                                                                                                                                                                                                                                                  .book-footer{
+                                                                                                                                                                                                                                                                    padding:16px;
+                                                                                                                                                                                                                                                                    font-size:9px}
+                                                                                                                                                                                                                                                                    footer{
+                                                                                                                                                                                                                                                                      flex-direction:column;
+                                                                                                                                                                                                                                                                      gap:6px}
+                                                                                                                                                                                                                                                                    }
+
+.history-table.empty {
+  min-width: 0;
+}
+.history-table.empty thead {
+  display: none;
+}
+.chart-panel { margin-bottom: 24px; padding: 20px; }
+.chart-caption, .chart-credit { color: var(--muted); font-size: 11px; line-height: 1.6; }
+.chart-legend { min-height: 34px; font-size: 12px; line-height: 1.8; font-variant-numeric: tabular-nums; }
+#price-chart { height: 380px; width: 100%; }
+.chart-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+.chart-buttons button { padding: 7px 10px; border: 1px solid var(--line); background: #101519; color: var(--muted); border-radius: 4px; font-size: 12px; }
+.chart-buttons button[aria-pressed="true"] { color: var(--green); border-color: var(--green); }
+.chart-help { margin-top: 16px; color: #a6b2b9; font-size: 12px; line-height: 1.7; }
+.chart-help summary { cursor: pointer; color: var(--green); }
+.chart-credit { margin-bottom: 0; }
+.chart-credit a { text-decoration: underline; }
+.portfolio-panel { padding: 20px; margin-bottom: 24px; }
+.portfolio-panel .panel-heading { flex-wrap: wrap; gap: 12px; }
+.portfolio-panel label { color: var(--muted); font-size: 12px; }
+.conditional-form { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; align-items: end; gap: 12px; }
+.conditional-form label { display: grid; gap: 8px; }
+.conditional-form input, .conditional-form select { width: 100%; min-width: 0; background: #101519; color: #e7ecee; border: 1px solid var(--line); border-radius: 4px; padding: 10px; }
+#conditional-orders button { background: #101519; color: var(--red); border: 1px solid var(--line); border-radius: 4px; padding: 7px 10px; }
+@media (max-width: 720px) { .conditional-form { grid-template-columns: 1fr; } }
+#market-select { padding: 10px; background: #101519; color: #e7ecee; border: 1px solid var(--line); border-radius: 4px; margin-left: 8px; }
+@media (max-width: 720px) {
+  .chart-panel { padding: 14px; }
+  .chart-panel .panel-heading { flex-wrap: wrap; gap: 12px; }
+  #price-chart { height: 310px; }
+}

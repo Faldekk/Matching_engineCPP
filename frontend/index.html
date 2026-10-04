@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#101519" />
+  <title>Exchange Lab — symulator giełdy</title>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Exchange Lab — strona główna"><span class="brand-icon">E<span>↗</span></span>EXCHANGE<span class="brand-light">LAB</span></a>
+    <div class="topbar-right"><span class="mode">WIRTUALNY PORTFEL</span><span class="status" id="connection" role="status">Łączenie…</span></div>
+  </header>
+  <main>
+    <div class="page-heading"><div><p class="eyebrow">TWÓJ RYNEK DO NAUKI</p><h1>Terminal transakcyjny<span class="heading-dot">.</span></h1><p class="subtitle">Prawdziwy rynek. Wirtualne środki. Twój pierwszy trade.</p></div><div class="session-tag"><span class="tiny-dot"></span>Sesja lokalna · C++ engine</div></div>
+    <section class="wallet-grid" aria-label="Twój portfel">
+      <article class="metric"><p>Saldo USDT <span class="metric-icon">$</span></p><h2 id="usdt">—</h2><span class="metric-note">Dostępne środki</span></article>
+      <article class="metric"><p>Saldo <span data-asset>BTC</span> <span class="metric-icon bitcoin-small">₿</span></p><h2 id="btc">—</h2><span class="metric-note">Ilość wybranego aktywa</span></article>
+      <article class="metric"><p>Wartość portfela <span class="metric-icon">↗</span></p><h2 id="equity">—</h2><span class="metric-note" id="valuation-note">Wycena BTC po najlepszej cenie kupna</span></article>
+      <article class="metric"><p>Zrealizowany wynik <span class="metric-icon">±</span></p><h2 id="pnl">—</h2><span class="metric-note">Wynik zamkniętych pozycji · bez prowizji</span></article>
+    </section>
+    <section class="panel portfolio-panel" aria-labelledby="portfolio-title">
+      <div class="panel-heading"><h3 id="portfolio-title">Skład portfela</h3><label>Wybierz rynek <select id="market-select"><option value="BTCUSDT">Bitcoin · BTC/USDT</option><option value="ETHUSDT">Ethereum · ETH/USDT</option><option value="SOLUSDT">Solana · SOL/USDT</option></select></label></div>
+      <div class="table-scroll"><table><thead><tr><th>Aktywo</th><th>Ilość</th><th>Wartość (USDT)</th><th>Udział</th><th>Wynik zrealizowany (USDT)</th></tr></thead><tbody id="portfolio"></tbody></table></div>
+      <p class="chart-caption">Udział = wartość aktywa / wartość całego portfela. USDT jest wspólne dla wszystkich rynków. Wycena po najlepszym bid; procenty znikają, gdy brakuje świeżej ceny posiadanego aktywa.</p>
+    </section>
+    <section class="panel chart-panel" aria-labelledby="chart-title">
+      <div class="panel-heading"><div><h3 id="chart-title">BTC / USDT · wykres live</h3><p id="chart-caption" class="chart-caption">Świece 1 min · czas UTC · wolumen w BTC</p></div><div class="chart-buttons" role="group" aria-label="Rodzaj wykresu"><button id="candles" aria-pressed="true">Świece</button><button id="line" aria-pressed="false">Linia</button><button id="chart-reset">Cały wykres</button></div></div>
+      <p id="chart-status" class="chart-caption" role="status">Łączenie z Binance…</p>
+      <p id="chart-legend" class="chart-legend">Czekamy na świece</p>
+      <div id="price-chart" aria-label="Wykres ceny i wolumenu BTC/USDT"></div>
+      <details class="chart-help"><summary>Jak czytać ten wykres?</summary><p>Każda świeca obejmuje jedną minutę. Zielona: cena zamknięcia jest co najmniej równa otwarciu. Czerwona: cena spadła. Korpus łączy otwarcie z zamknięciem, a knoty pokazują minimum i maksimum.</p><p>Słupki pod ceną pokazują wolumen — ile jednostek wybranego aktywa przeszło przez transakcje w danej minucie. Najnowsza świeca nadal się tworzy. Linia łączy ceny zamknięcia; jej ostatni punkt zmienia się na żywo.</p><p>Przesuwaj wykres i używaj kółka myszy do przybliżania. Najedź na świecę, aby odczytać jej ceny. Wykres pokazuje transakcje Binance; kupujesz po ask, sprzedajesz po bid, więc cena wykonania może się różnić od wykresu.</p></details>
+      <p class="chart-credit">TradingView Lightweight Charts™ · Copyright © 2025 TradingView, Inc. <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView</a></p>
+    </section>
+    <div class="trading-grid">
+      <section class="panel book-panel" aria-labelledby="book-title">
+        <div class="market-header"><div class="market-name"><span class="bitcoin">₿</span><div><h2><span data-asset>BTC</span><span class="muted"> / USDT</span></h2><p id="asset-title">Bitcoin · Binance Spot</p></div></div><div class="market-price"><strong id="best-price">—</strong><span>Najlepszy bid · USDT</span></div></div>
+        <div class="panel-heading"><h3 id="book-title">Książka zleceń</h3><span class="small-label">TOP 5 POZIOMÓW</span></div>
+        <div class="book-grid"><div><div class="book-side"><span class="buy-text">↗ KUPNO</span><span>Cena / ilość <span data-asset>BTC</span></span></div><table aria-label="Zlecenia kupna"><thead><tr><th>Cena (USDT)</th><th>Ilość aktywa</th></tr></thead><tbody id="bids"></tbody></table></div><div><div class="book-side"><span class="sell-text">↘ SPRZEDAŻ</span><span>Cena / ilość <span data-asset>BTC</span></span></div><table aria-label="Zlecenia sprzedaży"><thead><tr><th>Cena (USDT)</th><th>Ilość aktywa</th></tr></thead><tbody id="asks"></tbody></table></div></div>
+        <div class="book-footer"><span>Spread <strong id="spread">—</strong></span><span id="update">Czekamy na dane rynku</span></div>
+      </section>
+      <section class="panel order-panel" aria-labelledby="order-title">
+        <div class="panel-heading"><h3 id="order-title">Nowe zlecenie</h3><span class="small-label"><span data-asset>BTC</span> / USDT</span></div>
+        <div class="side-switch" role="group" aria-label="Strona zlecenia"><button id="buy" type="button" class="selected" aria-pressed="true">Kup</button><button id="sell" type="button" aria-pressed="false">Sprzedaj</button></div>
+        <form id="order-form">
+          <div class="order-type"><span>Typ zlecenia</span><strong>Market <span class="tiny-dot"></span></strong></div>
+          <label for="quantity">Ilość <span data-asset>BTC</span></label><div class="input-wrap"><input id="quantity" name="quantity" type="text" inputmode="decimal" autocomplete="off" placeholder="0.001" required /><span data-asset>BTC</span></div>
+          <p class="input-help">Wpisz ilość, np. 0.001. Możesz użyć przecinka.</p>
+          <div class="estimate"><span id="estimate-label">Szacowany koszt</span><strong id="estimate">— USDT</strong></div>
+          <button id="submit" class="submit" type="submit" disabled>Kup BTC</button>
+          <p class="order-hint" id="order-hint">Czekamy na świeże dane rynku.</p>
+          <div id="order-message" class="order-message" role="status" aria-live="polite" hidden></div>
+        </form>
+        <div class="simulation-note"><span>ⓘ</span><p>Handlujesz wirtualnymi środkami. Wykonanie zależy od dostępnych pięciu poziomów ceny. Pozostała część zlecenia jest anulowana.</p></div>
+      </section>
+    </div>
+    <section class="panel portfolio-panel" aria-labelledby="conditional-title">
+      <div class="panel-heading"><h3 id="conditional-title">Automatyczne kupno i ochrona przed spadkiem</h3><span><span data-asset>BTC</span> / USDT</span></div>
+      <form id="conditional-form" class="conditional-form">
+        <label>Reguła<select id="conditional-type"><option value="BUY_LIMIT">Kup, gdy cena spadnie (Buy Limit)</option><option value="STOP_LOSS">Sprzedaj przy spadku (Stop Loss)</option></select></label>
+        <label>Ilość aktywa<input id="conditional-quantity" inputmode="decimal" placeholder="0.001" required /></label>
+        <label>Cena graniczna (USDT)<input id="conditional-price" inputmode="decimal" placeholder="Cena w USDT" required /></label>
+        <button id="conditional-submit" class="submit" disabled>Ustaw regułę</button>
+      </form>
+      <p id="conditional-message" role="status" class="chart-caption">Czekamy na serwer obsługujący reguły.</p>
+      <p id="conditional-feedback" role="status" class="chart-caption"></p>
+      <p class="chart-caption">Buy Limit: kupno, gdy ask ≤ limit, najwyżej po limicie. Stop Loss: gdy bid ≤ próg, sprzedaż po dostępnych cenach — wykonanie może być poniżej progu. Środki są rezerwowane do wykonania lub anulowania. Reguły wymagają działającego serwera i świeżych danych; restart usuwa je. Pozostałość częściowego wykonania czeka na kolejny obraz rynku. Model przybliżony na top 5 Binance.</p>
+      <div class="table-scroll"><table><thead><tr><th>#</th><th>Rynek</th><th>Reguła</th><th>Próg (USDT)</th><th>Ilość / wykonano</th><th>Status</th><th></th></tr></thead><tbody id="conditional-orders"></tbody></table></div>
+    </section>
+    <section class="panel history-panel" aria-labelledby="history-title"><div class="panel-heading"><div class="history-title"><h3 id="history-title">Historia wykonań</h3><span id="fill-count" class="count">0</span></div><span class="small-label">OSTATNIE 20 WYKONAŃ</span></div><div class="table-scroll"><table class="history-table"><thead><tr><th>#</th><th>Rynek</th><th>Strona</th><th>Cena (USDT)</th><th>Ilość aktywa</th><th>Wartość (USDT)</th></tr></thead><tbody id="history"></tbody></table></div></section>
+    <footer><span><span class="tiny-dot"></span> Dane Binance · symulacja na zagregowanej książce</span><span>Portfel jest przechowywany do zamknięcia serwera.</span></footer>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

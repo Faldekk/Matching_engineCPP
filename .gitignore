@@ -5,6 +5,10 @@
 # Visual Studio i wyniki kompilacji.
 .vs/
 build/
+.deps/
+node_modules/
+frontend/dist/
+.npm-cache/
 x64/
 x86/
 Debug/

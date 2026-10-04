@@ -3,6 +3,9 @@
 #include <fstream>
 #include <string>
 #include "EngineWorker.h"
+#include "MarketData.h"
+#include "PaperTrading.h"
+#include "LivePaper.h"
 
 int runReplay(const std::string& path, bool threaded) {
     std::ifstream input(path);
@@ -36,9 +39,18 @@ int runReplay(const std::string& path, bool threaded) {
 int main(int argc, char* argv[]) {
     if (argc != 1) {
         try {
+            if (argc == 2 && std::string(argv[1]) == "--paper-demo") return runPaperDemo();
+            if (argc == 2 && std::string(argv[1]) == "--paper-live") return runLivePaper();
+            if (argc == 2 && std::string(argv[1]) == "--live") return runLiveMarket();
+            if (argc == 3 && std::string(argv[1]) == "--live") {
+                std::string count = argv[2];
+                if (count.empty() || count.find_first_not_of("0123456789") != std::string::npos)
+                    throw std::invalid_argument("Uzycie: --live [liczba aktualizacji]");
+                return runLiveMarket(std::stoi(count));
+            }
             if (argc == 3 && std::string(argv[1]) == "--replay") return runReplay(argv[2], false);
             if (argc == 3 && std::string(argv[1]) == "--replay-threaded") return runReplay(argv[2], true);
-            std::cerr << "Usage: MatchingEngineDemo [--replay|--replay-threaded path.csv]\n";
+            std::cerr << "Uzycie: MatchingEngineDemo [--replay|--replay-threaded path.csv] lub --live [liczba aktualizacji] lub --paper-demo lub --paper-live\n";
             return 2;
         }
         catch (const std::exception& error) {

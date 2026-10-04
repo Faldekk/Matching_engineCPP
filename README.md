@@ -1,8 +1,135 @@
-# Matching engine C++ — mała giełda w terminalu
+# Exchange Lab — Matching Engine C++
 
-Projekt do nauki C++, struktur danych i mechaniki rynku. Program dopasowuje zlecenia kupna i sprzedaży, zapisuje transakcje i pokazuje książkę zleceń w terminalu.
+Studencki projekt do nauki C++, struktur danych i mikrostruktury rynku. Zawiera własny matching engine oraz lokalną aplikację w przeglądarce do wirtualnego handlu BTC, Ethereum i Solaną na danych Binance Spot.
 
-Działamy na jednym umownym instrumencie, bez GUI i sieci. Zlecenia podajemy w kodzie albo odtwarzamy z CSV. Dostępny jest także worker przyjmujący polecenia od wielu wątków, ale tylko jeden wątek zmienia daną książkę. Program nie łączy się z prawdziwą giełdą.
+Startujesz z **10 000 wirtualnych USDT**. Program pobiera publiczne dane rynku, ale nie wysyła prawdziwych zleceń. Nie potrzebujesz konta ani klucza API Binance.
+
+## Najprostsze uruchomienie aplikacji
+
+Wymagania: Windows, Visual Studio z pakietem **Desktop development with C++** (C++20) oraz Node.js **22.12+ lub 24**. Internet jest potrzebny do pobrania zależności przy pierwszym starcie i do danych live.
+
+```bat
+git clone https://github.com/Faldekk/Matching_engineCPP.git
+cd Matching_engineCPP
+Uruchom.cmd
+```
+
+Możesz też dwukrotnie kliknąć `Uruchom.cmd`. Skrypt zbuduje brakujący serwer, zainstaluje brakujące zależności interfejsu, poczeka na gotowość i otworzy **http://127.0.0.1:5173/**.
+
+**Nie otwieraj `frontend/index.html` jako pliku.** Style, JavaScript i API wymagają serwera Vite.
+
+Zostaw okno uruchamiania otwarte. Enter zatrzymuje tylko procesy uruchomione przez to okno. Jeśli wykryto wcześniej działającą aplikację, jej procesy pozostają aktywne. Starszy serwer wymaga zakończenia poprzedniej sesji i ponownego startu. **Portfel, historia i reguły są przechowywane tylko w pamięci — restart serwera je usuwa.**
+
+Uruchomienie ręczne, w dwóch terminalach:
+
+```bat
+run-server.cmd
+```
+
+```bat
+run-ui.cmd
+```
+
+Serwer C++ działa na `127.0.0.1:18080`, a Vite przekazuje do niego zapytania `/api`. Adresy 5174 i 5175 używane podczas lokalnych testów nie są domyślnym sposobem uruchamiania projektu.
+
+## Co możesz zrobić w aplikacji?
+
+- Wybrać BTC/USDT, ETH/USDT lub SOL/USDT.
+- Oglądać pięć najlepszych poziomów bid/ask, spread i wykres live.
+- Kupować i sprzedawać Market za wspólne USDT; ilości mogą być ułamkowe.
+- Sprawdzać skład portfela, udziały procentowe, łączną wartość i zrealizowany wynik.
+- Ustawiać automatyczne Buy Limit i Stop Loss oraz anulować oczekujące zlecenia.
+- Odczytywać historię ostatnich 20 wykonań; serwer przechowuje pełną historię sesji.
+
+USDT to stablecoin powiązany z dolarem. `ETH/USDT` oznacza cenę jednej jednostki ETH w USDT. Sprzedaż posiadanego aktywa zamienia je na USDT; aplikacja nie obsługuje shortów ani dźwigni.
+
+## Portfel i wynik
+
+Każde aktywo ma własną ilość i koszt nabycia, ale wszystkie zakupy korzystają z jednego salda USDT. Nie można wydać tych samych pieniędzy jednocześnie na ETH i SOL.
+
+```text
+Wartość portfela = USDT + ilość BTC × bid BTC
+                        + ilość ETH × bid ETH
+                        + ilość SOL × bid SOL
+Udział aktywa = wartość aktywa / wartość portfela × 100%
+```
+
+Wyceniamy po najlepszym bid, czyli cenie dostępnej po stronie kupujących. To przybliżenie: sprzedaż dużej ilości może przejść przez kilka poziomów i przynieść mniej. Brak świeżej ceny posiadanego aktywa oznacza brak pełnej wyceny i udziałów procentowych.
+
+Przy sprzedaży liczymy zrealizowany wynik względem średniego kosztu sprzedanych jednostek. Przykład: kupujesz 2 ETH po 2000 i sprzedajesz 1 ETH po 2100. Zrealizowany zysk wynosi 100 USDT; pozostały ETH nadal ma koszt 2000. Zmiana wartości niesprzedanych aktywów wpływa na wycenę portfela, ale nie jest zrealizowanym wynikiem.
+
+## Automatyczne kupno i Stop Loss
+
+W formularzu wybierz regułę, ilość aktywa i cenę graniczną w USDT.
+
+| Reguła | Warunek | Wykonanie i rezerwacja |
+| --- | --- | --- |
+| Buy Limit | Najlepszy ask ≤ limit | Kupuje wyłącznie po cenach nieprzekraczających limitu. Rezerwuje ilość × limit w USDT. |
+| Stop Loss | Najlepszy bid ≤ próg | Aktywuje sprzedaż Market posiadanego aktywa. Rezerwuje jego ilość. Cena wykonania może być poniżej progu. |
+
+Przykłady: Buy Limit na 0,1 ETH z limitem 2000 rezerwuje 200 USDT. Stop Loss na posiadane 0,1 ETH z progiem 1900 zacznie sprzedawać, gdy bid osiągnie 1900 lub mniej. Jeśli warunek jest już spełniony podczas dodawania, wykonanie może nastąpić od razu.
+
+Statusy: oczekuje, częściowo wykonane, wykonane i anulowane. Reszta częściowo wykonanego zlecenia czeka na następny obraz rynku. Stop Loss po aktywacji pozostaje sprzedażą Market, nawet jeśli cena odbije. Anulowanie zwalnia niewykonaną część rezerwacji i nie cofa wcześniejszych transakcji.
+
+Reguły wykonuje serwer, więc działają po zamknięciu karty przeglądarki. Wymagają jednak uruchomionego serwera i świeżych danych. Nie są wysyłane do Binance.
+
+## Jak czytać wykres?
+
+Jedna świeca obejmuje minutę. Korpus łączy otwarcie z zamknięciem, knoty pokazują maksimum i minimum. Zielona świeca ma zamknięcie co najmniej równe otwarciu, czerwona — niższe. Najnowsza świeca nadal się tworzy.
+
+Słupki wolumenu pokazują ilość aktywa wymienioną w danej minucie. Widok liniowy łączy ceny zamknięcia. Historia przy starcie obejmuje 180 świec; aktualizacje przychodzą przez WebSocket Binance. Oś czasu używa UTC. Najedź na wykres, aby odczytać OHLC, przybliżaj kółkiem myszy i użyj „Cały wykres”, aby wrócić do pełnego widoku.
+
+Cena na wykresie pochodzi z transakcji. Kupno Market korzysta z ask, sprzedaż z bid — dlatego wykonanie może różnić się od ostatniej ceny na wykresie.
+
+## Dwa modele rynku
+
+**OrderBook** to nasza własna książka z konkretnymi zleceniami, ID i FIFO. Jej szczegóły opisano niżej.
+
+**Paper trading live** używa zagregowanych obrazów top 5 Binance. Nie znamy ID ani kolejki FIFO uczestników giełdy. Wykonania są przybliżeniem na dostępnych poziomach; nowy obraz odświeża płynność. Symulator nie zmienia prawdziwego rynku ani nie modeluje jego reakcji na nasze zlecenia.
+
+Market wykonuje dostępną część i anuluje resztę. Buy Limit oraz aktywowany Stop Loss pozostawiają resztę w oczekiwaniu zgodnie z zasadami powyżej. Dane starsze niż pięć sekund lub rozłączenie blokują handel na danym rynku; brak ETH nie musi blokować świeżego SOL. Stan rynku i portfela synchronizuje jeden mutex. Interfejs pobiera spójny stan HTTP co sekundę; WebSocket służy obecnie danym Binance, w tym świecom.
+
+Brak prowizji, funding, dźwigni, trwałego zapisu i dokładnego modelu kolejki Binance. Dywersyfikacja między BTC, ETH i SOL nadal pozostaje ekspozycją na rynek kryptowalut.
+
+## Kod aplikacji i testy
+
+| Element | Rola |
+| --- | --- |
+| `PaperTrading.*` | Wykonania na L2, ilości ułamkowe, koszt i wynik. |
+| `LivePaper.*` | Portfel wielu aktywów, wspólne USDT, rezerwacje i reguły. |
+| `BinanceFeed.*`, `MarketData.*` | Odbiór WebSocket WinHTTP i parsowanie książki. |
+| `ServerMain.cpp`, `ServerApi.*` | Lokalny serwer Crow i API JSON. |
+| `frontend/` | HTML/CSS/JavaScript, Vite i Lightweight Charts. |
+| `api/examples.http` | Przykładowe odczyty, zlecenia i anulowanie. |
+
+`setup-server.ps1` pobiera przypięte Crow 1.2.1 i Asio 1.30.2 oraz sprawdza SHA256 archiwów. Zależności frontendowe są zapisane w `frontend/package-lock.json`.
+
+```bat
+build-server.cmd test
+```
+
+Testuje API, wspólne saldo, wycenę, konkurencyjne operacje, walidację i reguły. W Developer Command Prompt:
+
+```bat
+run-tests.cmd
+```
+
+Uruchamia pięć zestawów testów: matching, replay/worker, parser rynku, paper trading i sesję live. Testy automatyczne używają danych syntetycznych i nie wymagają połączenia z Binance.
+
+```bat
+cd frontend
+npm ci
+npm test
+npm run build
+```
+
+Testy JavaScript sprawdzają świece i scalanie historii z nowszymi aktualizacjami. `test-server-live.ps1` jest osobnym testem sieciowym z wirtualnymi transakcjami; uruchamiaj go bez zajętego portu 18080. Dodatkowe tryby terminala po `build-demo.cmd`: `--live`, `--paper-demo` i `--paper-live` (BTC/USDT).
+
+Wykres używa TradingView Lightweight Charts™. Copyright © 2025 TradingView, Inc. — [TradingView](https://www.tradingview.com/).
+
+## Własny matching engine — opis do nauki
+
+Poniższe sekcje dotyczą silnika z syntetycznymi zleceniami i całkowitymi ilościami. Jego Stop Market aktywuje cena transakcji; Stop Loss w aplikacji live aktywuje bid.
 
 ## 1. Uruchomienie
 
@@ -12,7 +139,7 @@ Działamy na jednym umownym instrumencie, bez GUI i sieci. Zlecenia podajemy w k
 
 Projekt używa C++20. Plik wykonywalny tej konfiguracji powstaje w `x64/Debug/Matching_engineCPP.exe`.
 
-Bez argumentów aplikacja wykonuje scenariusze z `main.cpp`. Nie ma jeszcze menu ani wpisywania zleceń z klawiatury. Aby zmienić eksperyment, edytuj `main.cpp` albo przygotuj własny CSV do replayu.
+Bez argumentów program terminalowy wykonuje scenariusze z `main.cpp`. Nie ma jeszcze menu ani wpisywania zleceń z klawiatury. Aby zmienić eksperyment, edytuj `main.cpp` albo przygotuj własny CSV do replayu.
 
 Możesz też zbudować aplikację w **Developer Command Prompt for Visual Studio**, z głównego folderu projektu:
 
@@ -23,7 +150,7 @@ build\MatchingEngineDemo.exe --replay data\replay.csv
 build\MatchingEngineDemo.exe --replay-threaded data\replay.csv
 ```
 
-Projekt Visual Studio używa toolsetu v145. Skrypty korzystają z kompilatora `cl` dostępnego w Developer Command Prompt i wymagają obsługi C++20. Nie korzystamy z dodatkowych bibliotek. Ścieżkę do CSV podajemy względem aktualnego folderu terminala.
+Projekt Visual Studio używa toolsetu v145. Skrypty korzystają z kompilatora `cl` dostępnego w Developer Command Prompt i wymagają obsługi C++20. Tryby live korzystają z Windows WinHTTP; serwer aplikacji używa Crow i Asio. Ścieżkę do CSV podajemy względem aktualnego folderu terminala.
 
 ## 2. Struktura projektu
 
@@ -638,7 +765,7 @@ Testy obejmują też wolumen, średnią wykonania, slippage, IOC/FOK, aktywację
 | Replay zdarzeń z CSV | Gotowy |
 | Wielowątkowe przyjmowanie poleceń | Gotowe; matching jednej książki wykonuje jeden worker |
 
-Nie ma jeszcze kont, kontroli środków, prowizji, wielu instrumentów ani trwałego zapisu. Po zakończeniu programu stan znika.
+Powyższa tabela dotyczy własnego OrderBook. Aplikacja paper trading ma osobny model portfela BTC/ETH/SOL, kontrolę środków i rezerwacje. Nadal nie ma prowizji, logowania ani trwałego zapisu. Po zakończeniu serwera stan znika.
 
 Indeks ID ma przeciętny koszt odczytu O(1). Usunięcie wskazanego węzła listy jest O(1), ale odszukanie poziomu ceny w mapie nadal kosztuje O(log P), gdzie P to liczba poziomów. Zmniejszenie ilości przy tej samej cenie nie przepisuje listy. Sprawdzanie progów stopów pozostaje liniowe. Kod jest modelem do nauki, a nie produkcyjnym systemem HFT.
 

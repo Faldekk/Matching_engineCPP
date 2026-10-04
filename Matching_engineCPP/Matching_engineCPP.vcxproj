@@ -144,6 +144,10 @@
     <ClInclude Include="Trade.h" />
     <ClInclude Include="EngineCommand.h" />
     <ClInclude Include="EngineWorker.h" />
+    <ClInclude Include="MarketData.h" />
+    <ClInclude Include="PaperTrading.h" />
+    <ClInclude Include="BinanceFeed.h" />
+    <ClInclude Include="LivePaper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -151,6 +155,11 @@
     <ClCompile Include="Trade.cpp" />
     <ClCompile Include="EngineCommand.cpp" />
     <ClCompile Include="EngineWorker.cpp" />
+    <ClCompile Include="MarketData.cpp" />
+    <ClCompile Include="PaperTrading.cpp" />
+    <ClCompile Include="BinanceFeed.cpp" />
+    <ClCompile Include="LivePaper.cpp" />
+    <ClCompile Include="LiveMarket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
